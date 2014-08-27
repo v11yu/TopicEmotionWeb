@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("topic")
 public class TopicController {
-	@Autowired
-	private String topicId;
+
 	@RequestMapping("weiboList")
-	public String showWeiboList() {
+	public String showWeiboList(String topicId) {
 		System.out.println(topicId);
 		return "Topic";
 	}
