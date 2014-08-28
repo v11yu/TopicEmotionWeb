@@ -16,7 +16,7 @@
     <mvc:annotation-driven />  
     <!-- 定义跳转的文件的前后缀 -->  
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="prefix" value="/WEB-INF/resources/" />  
         <property name="suffix" value=".jsp" />  
     </bean>  
 </beans>

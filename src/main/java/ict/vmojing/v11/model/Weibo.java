@@ -1,9 +1,19 @@
 package ict.vmojing.v11.model;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
 public class Weibo {
 	private String content;
 	private String thumbnailPicture;
 	private String uid;
+	private Integer emotion;
+	public Weibo(){}
+	public Weibo(DBObject obj){
+		this.content = (String) obj.get("text");
+		//this.thumbnailPicture = (String) obj.get("tp");
+		//this.uid = (String) obj.get("uid");
+	}
 	public String getContent() {
 		return content;
 	}
@@ -21,6 +31,21 @@ public class Weibo {
 	}
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+	public Integer getEmotion() {
+		return emotion;
+	}
+	public void setEmotion(Integer emotion) {
+		this.emotion = emotion;
+	}
+	public DBObject toDBObject(){
+		DBObject obj = new BasicDBObject();
+		obj.put("content", content);
+		obj.put("emotion", emotion);
+		return obj;
+	}
+	public String toString(){
+		return toDBObject().toString();
 	}
 	
 }

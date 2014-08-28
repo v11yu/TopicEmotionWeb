@@ -25,17 +25,10 @@ public class WordFilter {
 	public static HashMap<String, Integer> filterStopWords(HashMap<String, Integer> map){
 		MyLog.logInfo("map object id :"+map.toString());
 		Iterator<Entry<String, Integer>> iter = map.entrySet().iterator();
-		List<String> stops = WordManager.getUniqueDictionary().getStops();
+		Set<String> stops = WordManager.getUniqueDictionary().getStops();
 		while(iter.hasNext()){
 			Entry<String, Integer> en = iter.next();
-			boolean haveStopWord = false;
-			for(String stop : stops){
-				if(en.getKey().contains(stop)){
-					haveStopWord = true;
-					break;
-				}
-			}
-			if(haveStopWord || en.getKey().length()<2){
+			if(stops.contains(en.getKey()) || en.getKey().length()<2){
 				iter.remove();
 			}
 		}

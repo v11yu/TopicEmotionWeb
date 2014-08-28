@@ -1,9 +1,10 @@
 package ict.vmojing.v11.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.io.*;
-
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class ReadFile {
-
+	private static final String utf_8 = "utf-8";
 	/**
 	 * 读取文件转化为hashMap
 	 * @param fileName
@@ -24,12 +25,13 @@ public class ReadFile {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
 		if(is == null) MyLog.logDebug("read file is null");
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader reader = new BufferedReader(isr);
-		String line = null;
 		try {
-			while((line = reader.readLine()) != null){
-				map.put(line.split(" ")[0], Integer.parseInt(line.split(" ")[1]));
+			InputStreamReader isr = new InputStreamReader(is, utf_8);
+			BufferedReader reader = new BufferedReader(isr);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				map.put(line.split(" ")[0],
+						Integer.parseInt(line.split(" ")[1]));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -47,12 +49,13 @@ public class ReadFile {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
 		if(is == null) MyLog.logDebug("read file is null");
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader reader = new BufferedReader(isr);
-		String line = null;
 		try {
-			while((line = reader.readLine()) != null){
-				map.put(line.split(" ")[0], weight*Integer.parseInt(line.split(" ")[1]));
+			InputStreamReader isr = new InputStreamReader(is, utf_8);
+			BufferedReader reader = new BufferedReader(isr);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				map.put(line.split(" ")[0],
+						weight * Integer.parseInt(line.split(" ")[1]));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -69,11 +72,11 @@ public class ReadFile {
 		List<String> ls = new ArrayList<String>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
 		if(is == null) MyLog.logDebug("read file is null");
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader reader = new BufferedReader(isr);
-		String line = null;
 		try {
-			while((line = reader.readLine()) != null){
+			InputStreamReader isr = new InputStreamReader(is, utf_8);
+			BufferedReader reader = new BufferedReader(isr);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
 				ls.add(line);
 			}
 		} catch (IOException e) {
@@ -82,5 +85,26 @@ public class ReadFile {
 		}
 		return ls;
 	}
-
+	/**
+	 * 读取文件，转化为Set类型
+	 * @param fileName
+	 * @return
+	 */
+	public static Set<String> readFileToSet(String fileName){
+		Set<String> ls = new HashSet<String>();
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+		if(is == null) MyLog.logDebug("read file is null");
+		try {
+			InputStreamReader isr = new InputStreamReader(is, utf_8);
+			BufferedReader reader = new BufferedReader(isr);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				ls.add(line);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ls;
+	}
 }

@@ -16,6 +16,12 @@ $RECYCLE.BIN/
 *.bak
 /bin
 .settings/
+src/main/webapp/WEB-INF/resources
+src/main/webapp/ckeditor
+src/main/webapp/css
+src/main/webapp/galleria
+src/main/webapp/img
+src/main/webapp/js
 # =========================
 # Operating System Files
 # =========================

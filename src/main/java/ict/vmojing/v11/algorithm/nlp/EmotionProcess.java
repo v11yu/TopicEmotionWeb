@@ -1,6 +1,7 @@
 package ict.vmojing.v11.algorithm.nlp;
 
 import ict.vmojing.v11.algorithm.nlp.word.WordSplit;
+import ict.vmojing.v11.utils.MyLog;
 import ict.vmojing.v11.utils.WordManager;
 
 import java.util.HashMap;
@@ -28,7 +29,8 @@ public class EmotionProcess {
 	 * 表情词典
 	 */
 	private HashMap<String, Integer> symbolMap = new HashMap<String, Integer>();
-	
+	private final Double threshold_low = -0.6;
+	private final Double threshold_high = 2.0;
 	private static EmotionProcess uniqueEmotionProcess;
 	public static synchronized EmotionProcess getUniqueProcess(){
 		if(uniqueEmotionProcess == null){
@@ -41,11 +43,17 @@ public class EmotionProcess {
 	 */
 	private void init(){
 		wordMap = WordManager.getUniqueDictionary().getWords();
+		symbolMap = WordManager.getUniqueDictionary().getSymbols();
 
 	}
 	private EmotionProcess(){
 		init();
 	}
+	/**
+	 * 计算文本得分
+	 * @param content
+	 * @return
+	 */
 	public Double getScore(String content){
 		Double score;
 		List<String> ls = WordSplit.splitByNGrams(content, 1, 3);
@@ -83,8 +91,9 @@ public class EmotionProcess {
 	 * @param rawText
 	 * @return 1为正面，0为中性，-1为负面
 	 */
-	public Integer getEmotionRankByNgram(String content,double high,double low){
-
+	private Integer getEmotionRankByNgram(String content,double high,double low){
+		int check = checkSymbol(content);
+		if(check != -2) return check;
 		double res = getScore(content);
 		if(res > high) return 1;
 		else if(res < low) return -1;
@@ -96,13 +105,12 @@ public class EmotionProcess {
 	 * @return 1为正面，0为中性，-1为负面
 	 */
 	public Integer getEmotionRankByNgram(String content){
-		int check = checkSymbol(content);
-		if(check != -2) return check;
-		double high = 2;
-		double low = -0.6;
-		double res = getScore(content);
-		if(res > high) return 1;
-		else if(res < low) return -1;
-		else return 0;
+		return getEmotionRankByNgram(content,threshold_high,threshold_low);
+	}
+	public static void main(String[] args) {
+		String content = "农夫山泉免费送水啦，2瓶4升的。在支付宝钱包里，找到“服务”，手写输入添加“农夫山泉”。然后点“我要订水”-“家庭订水”，按着操作进行，到最后选购产品时，价格就是0，也没有送货费。快来领吧！给我32个赞";
+		
+		EmotionProcess eProcess = getUniqueProcess();
+		MyLog.logInfo(eProcess.getEmotionRankByNgram(content)+" "+content);
 	}
 }
