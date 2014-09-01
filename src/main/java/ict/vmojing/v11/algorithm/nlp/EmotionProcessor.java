@@ -1,5 +1,6 @@
 package ict.vmojing.v11.algorithm.nlp;
 
+import ict.vmojing.v11.algorithm.nlp.word.WordFilter;
 import ict.vmojing.v11.algorithm.nlp.word.WordSplit;
 import ict.vmojing.v11.utils.MyLog;
 import ict.vmojing.v11.utils.WordManager;
@@ -20,7 +21,7 @@ import com.mongodb.util.UniqueList;
  * @date 2014年8月26日
  * @version 1.0
  */
-public class EmotionProcess {
+public class EmotionProcessor {
 	/*
 	 * 词典
 	 */
@@ -29,12 +30,12 @@ public class EmotionProcess {
 	 * 表情词典
 	 */
 	private HashMap<String, Integer> symbolMap = new HashMap<String, Integer>();
-	private final Double threshold_low = -0.6;
-	private final Double threshold_high = 2.0;
-	private static EmotionProcess uniqueEmotionProcess;
-	public static synchronized EmotionProcess getUniqueProcess(){
+	private final Double threshold_low = -0.1;
+	private final Double threshold_high = 1.2;
+	private static EmotionProcessor uniqueEmotionProcess;
+	public static synchronized EmotionProcessor getUniqueProcess(){
 		if(uniqueEmotionProcess == null){
-			uniqueEmotionProcess = new EmotionProcess();
+			uniqueEmotionProcess = new EmotionProcessor();
 		}
 		return uniqueEmotionProcess;
 	}
@@ -46,7 +47,7 @@ public class EmotionProcess {
 		symbolMap = WordManager.getUniqueDictionary().getSymbols();
 
 	}
-	private EmotionProcess(){
+	private EmotionProcessor(){
 		init();
 	}
 	/**
@@ -56,15 +57,17 @@ public class EmotionProcess {
 	 */
 	public Double getScore(String content){
 		Double score;
-		List<String> ls = WordSplit.splitByNGrams(content, 1, 3);
+		List<String> ls = WordSplit.splitByNGrams(content, 1, 4);
 		int result = 0;
 		int count = 0;
 		for(String str : ls){
 			if(wordMap.containsKey(str)){
+				MyLog.logDebug(str+" "+wordMap.get(str));
 				result += wordMap.get(str);
 				count++;
 			}
 		}
+
 		if(count == 0) return 0.0;
 		return 1.0*result / count;
 	}
@@ -94,6 +97,8 @@ public class EmotionProcess {
 	private Integer getEmotionRankByNgram(String content,double high,double low){
 		int check = checkSymbol(content);
 		if(check != -2) return check;
+		check = WordFilter.judgeByRule(content);
+		if(check != -2) return check;
 		double res = getScore(content);
 		if(res > high) return 1;
 		else if(res < low) return -1;
@@ -108,9 +113,8 @@ public class EmotionProcess {
 		return getEmotionRankByNgram(content,threshold_high,threshold_low);
 	}
 	public static void main(String[] args) {
-		String content = "农夫山泉免费送水啦，2瓶4升的。在支付宝钱包里，找到“服务”，手写输入添加“农夫山泉”。然后点“我要订水”-“家庭订水”，按着操作进行，到最后选购产品时，价格就是0，也没有送货费。快来领吧！给我32个赞";
-		
-		EmotionProcess eProcess = getUniqueProcess();
+		String content = "『“哈尔滨核电乌龙事件”始末』http://t.cn/RPu3xzs";
+		EmotionProcessor eProcess = getUniqueProcess();
 		MyLog.logInfo(eProcess.getEmotionRankByNgram(content)+" "+content);
 	}
 }

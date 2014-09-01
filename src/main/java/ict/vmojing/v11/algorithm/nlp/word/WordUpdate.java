@@ -1,6 +1,8 @@
 package ict.vmojing.v11.algorithm.nlp.word;
 
-import ict.vmojing.v11.algorithm.nlp.EmotionProcess;
+import ict.vmojing.v11.algorithm.nlp.EmotionProcessor;
+import ict.vmojing.v11.service.TopicService;
+import ict.vmojing.v11.service.TopicServiceImpl;
 import ict.vmojing.v11.utils.*;
 
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Map.Entry;
 
 
 
+
+
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
@@ -22,7 +26,7 @@ public class WordUpdate {
 	private final double pos_score = 2.9;
 	private final double neg_score = -1.9;
 	private final String _content = "text";
-	private EmotionProcess ep = EmotionProcess.getUniqueProcess();
+	private EmotionProcessor ep = EmotionProcessor.getUniqueProcess();
 	/*
 	 * 加入词典的最低频率阈值
 	 */
@@ -57,17 +61,20 @@ public class WordUpdate {
 	 * 对于新话题，建立更新词典信息
 	 * @param cursor
 	 */
-	public void setUp(DBCursor cursor){
+	public void setUp(DBCursor cursor,String output){
 		setThreshold(cursor.count());
 		buildMap(cursor);
 		updateMap = WordFilter.filterStopWords(updateMap);
-		addMapWord();
-		
+		/*
+		 * 输出
+		 */
+		//addMapWord();
+		WriteFile.write(MapTools.sortMap(updateMap), output,1);
 	}
 	/**
 	 * 将获取的新词加入词典中
 	 */
-	private synchronized void addMapWord(){
+	private synchronized void addMapWord(String output){
 		HashMap<String, Integer> dic = WordManager.getUniqueDictionary().getWords();
 		Iterator<Entry<String, Integer>> iter = updateMap.entrySet().iterator();
 		while (iter.hasNext()) {
@@ -78,7 +85,7 @@ public class WordUpdate {
 				MyLog.logInfo("新词项："+keyString+" "+valueInteger);
 				dic.put(keyString, valueInteger);
 				Integer score = getWordScore(valueInteger);
-				WriteFile.addWord(keyString,score,"./resource/update");
+				WriteFile.addWord(keyString,score,output);
 			}
 			
 		}
@@ -122,8 +129,11 @@ public class WordUpdate {
 		}
 	}
 	public static void main(String[] args) {
-		
+		WordUpdate update = new WordUpdate();
+		String topicId = "53eb680080cd34525537e95d";
+		TopicService tService = new TopicServiceImpl();
+		update.setUp(tService.getTopicCursor(topicId),"./src/main/resources/dic_all");
 	
-		WriteFile.addWord("hello",20, "./resource/userDic");
+		
 	}
 }

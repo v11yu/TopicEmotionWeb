@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import ict.vmojing.v11.algorithm.nlp.EmotionProcess;
+import ict.vmojing.v11.algorithm.nlp.EmotionProcessor;
 import ict.vmojing.v11.dao.*;
 import ict.vmojing.v11.model.Weibo;
 import ict.vmojing.v11.utils.MyLog;
@@ -32,7 +32,7 @@ import ict.vmojing.v11.utils.WordManager;
 @Service
 public class TopicServiceImpl implements TopicService{
 
-	private DBCursor getTopicCursor(String topicId){
+	public DBCursor getTopicCursor(String topicId){
 		WeiboDao wdao = new WeiboDao();
 		DBCursor cursor = wdao.findByValueEquals("tid", new ObjectId(topicId));
 		return cursor;
@@ -71,7 +71,7 @@ public class TopicServiceImpl implements TopicService{
 		// TODO Auto-generated method stub
 		List<Weibo> weibos = new ArrayList<Weibo>();
 		DBCursor cursor = getTopicCursor(topicId);
-		EmotionProcess eProcess = EmotionProcess.getUniqueProcess();
+		EmotionProcessor eProcess = EmotionProcessor.getUniqueProcess();
 		while(cursor.hasNext()){
 			DBObject object = cursor.next();
 			Weibo weibo = new Weibo(object);

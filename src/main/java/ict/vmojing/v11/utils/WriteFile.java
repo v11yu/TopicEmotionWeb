@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 import javax.swing.text.html.parser.Entity;
 
+
+
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 public class WriteFile {
@@ -28,11 +30,11 @@ public class WriteFile {
 		}
 	}
 	/**
-	 * 将HashMap<String, Integer>类型，写入文件
+	 * 将Map<String, Integer>类型，写入文件
 	 * @param map
 	 * @param fileName 写入文件的路径
 	 */
-	public static void write(HashMap<String, Integer> map,String fileName){
+	public static void write(Map<String, Integer> map,String fileName){
 		try {
 			FileWriter wr = new FileWriter(fileName);
 			Iterator<Entry<String,Integer>> iter = map.entrySet().iterator();
@@ -40,6 +42,27 @@ public class WriteFile {
 			while(iter.hasNext()){
 				entry = iter.next();
 				wr.write(entry.getKey()+" "+entry.getValue()+"\n");
+			}
+			wr.close();
+		} catch (Exception e) {
+			MyLog.logError("can not wirte file");
+		}
+	}
+	/**
+	 * 将Map<String, Integer>类型，写入文件
+	 * @param map
+	 * @param threshold 阈值
+	 * @param fileName 写入文件的路径
+	 */
+	public static void write(Map<String, Integer> map,String fileName,Integer threshold){
+		try {
+			FileWriter wr = new FileWriter(fileName);
+			Iterator<Entry<String,Integer>> iter = map.entrySet().iterator();
+			Entry<String,Integer> entry = null;
+			while(iter.hasNext()){
+				entry = iter.next();
+				if(Math.abs(entry.getValue())>threshold)
+					wr.write(entry.getKey()+" "+entry.getValue()+"\n");
 			}
 			wr.close();
 		} catch (Exception e) {
