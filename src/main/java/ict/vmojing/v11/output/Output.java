@@ -1,0 +1,34 @@
+package ict.vmojing.v11.output;
+
+import ict.vmojing.v11.model.Weibo;
+import ict.vmojing.v11.service.TopicServiceImpl;
+import ict.vmojing.v11.utils.MyLog;
+import ict.vmojing.v11.utils.WriteFile;
+
+import java.util.*;
+
+public class Output {
+	public static void output(){
+		TopicServiceImpl topicService = new TopicServiceImpl();
+		List<Weibo> weibos = topicService.getTopicWeiboList("hahe");
+		List<String> pos = new ArrayList<String>();
+		List<String> neg = new ArrayList<String>();
+		List<String> no = new ArrayList<String>();
+		for(Weibo w:weibos){
+			String content = w.getContent();
+			if(w.getEmotion() == -1)
+				neg.add(content);
+			else if(w.getEmotion() == 1)
+				pos.add(content);
+			else
+				no.add(content);
+		}
+		WriteFile.write(pos, "./src/main/resources/pos_hahe");
+		WriteFile.write(neg, "./src/main/resources/neg_hahe");
+		WriteFile.write(no, "./src/main/resources/no_hahe");
+		MyLog.logInfo("支持个数:"+pos.size()+" 反对个数:"+neg.size()+" 中立个数:"+no.size());
+	}
+	public static void main(String[] args) {
+		output();	
+	}
+}

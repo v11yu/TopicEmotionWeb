@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
@@ -31,10 +33,31 @@ import ict.vmojing.v11.utils.WordManager;
 
 @Service
 public class TopicServiceImpl implements TopicService{
-
+	WeiboDao wdao ;
+	public TopicServiceImpl(){
+		wdao = new WeiboDao();
+	}
+	public TopicServiceImpl(WeiboDao wdao){
+		this.wdao = wdao;
+	}
+	/**
+	 * DBCursor to list
+	 * @param cursor
+	 * @return
+	 */
+	private List<Weibo> toList(DBCursor cursor){
+		List<Weibo> weibos = new ArrayList<Weibo>();
+		EmotionProcessor eProcess = EmotionProcessor.getUniqueProcess();
+		while(cursor.hasNext()){
+			DBObject object = cursor.next();
+			Weibo weibo = new Weibo(object);
+			weibo.setEmotion(eProcess.getEmotionRankByNgram(weibo.getContent()));
+			weibos.add(weibo);
+		}
+		return weibos;
+	}
 	public DBCursor getTopicCursor(String topicId){
-		WeiboDao wdao = new WeiboDao();
-		DBCursor cursor = wdao.findByValueEquals("tid", new ObjectId(topicId));
+		DBCursor cursor = wdao.findByValueEquals("cid", topicId);
 		return cursor;
 	}
 	public void updateDic() {
@@ -68,17 +91,24 @@ public class TopicServiceImpl implements TopicService{
 	@Override
 	public List<Weibo> getTopicWeiboList(String topicId, Integer itemCount,
 			Integer pageNum) {
-		// TODO Auto-generated method stub
-		List<Weibo> weibos = new ArrayList<Weibo>();
+		DBCursor cursor = getTopicCursor(topicId,itemCount,pageNum);
+		return toList(cursor);
+	}
+	@Override
+	public DBCursor getTopicCursor(String topicId, Integer itemCount,
+			Integer pageNum) {
+		DBCursor cursor = wdao.findByValueEquals("cid", topicId).skip(itemCount * pageNum).limit(itemCount);;
+		return cursor;
+	}
+	@Override
+	public List<Weibo> getTopicWeiboList(String topicId) {
 		DBCursor cursor = getTopicCursor(topicId);
-		EmotionProcessor eProcess = EmotionProcessor.getUniqueProcess();
-		while(cursor.hasNext()){
-			DBObject object = cursor.next();
-			Weibo weibo = new Weibo(object);
-			weibo.setEmotion(eProcess.getEmotionRankByNgram(weibo.getContent()));
-			weibos.add(weibo);
-		}
-		return weibos;
+		return toList(cursor);
+	}
+	public static void main(String[] args) {
+		TopicService topicService = new TopicServiceImpl();
+		WeiboDao wdao = new WeiboDao("sign_weibo");
+		DBCursor cursor = topicService.getTopicCursor("hahe",150,0);
 	}
 
 }

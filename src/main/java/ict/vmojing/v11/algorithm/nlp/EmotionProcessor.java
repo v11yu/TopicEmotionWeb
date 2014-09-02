@@ -31,7 +31,7 @@ public class EmotionProcessor {
 	 */
 	private HashMap<String, Integer> symbolMap = new HashMap<String, Integer>();
 	private final Double threshold_low = -0.1;
-	private final Double threshold_high = 1.2;
+	private final Double threshold_high = 2.0;
 	private static EmotionProcessor uniqueEmotionProcess;
 	public static synchronized EmotionProcessor getUniqueProcess(){
 		if(uniqueEmotionProcess == null){
@@ -56,13 +56,14 @@ public class EmotionProcessor {
 	 * @return
 	 */
 	public Double getScore(String content){
+		
 		Double score;
-		List<String> ls = WordSplit.splitByNGrams(content, 1, 4);
+		List<String> ls = WordSplit.splitByNGrams(content, 1, 5);
 		int result = 0;
 		int count = 0;
 		for(String str : ls){
 			if(wordMap.containsKey(str)){
-				MyLog.logDebug(str+" "+wordMap.get(str));
+				//MyLog.logDebug(str+" "+wordMap.get(str));
 				result += wordMap.get(str);
 				count++;
 			}
@@ -113,7 +114,7 @@ public class EmotionProcessor {
 		return getEmotionRankByNgram(content,threshold_high,threshold_low);
 	}
 	public static void main(String[] args) {
-		String content = "『“哈尔滨核电乌龙事件”始末』http://t.cn/RPu3xzs";
+		String content = "亲俄献媚，早晚有一天吃大亏的，自做聪明，俄罗斯侵占中国最多的土地，还在犯贱，醒醒中国某组织";
 		EmotionProcessor eProcess = getUniqueProcess();
 		MyLog.logInfo(eProcess.getEmotionRankByNgram(content)+" "+content);
 	}

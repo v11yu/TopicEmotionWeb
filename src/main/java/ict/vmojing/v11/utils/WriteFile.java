@@ -21,6 +21,7 @@ public class WriteFile {
 	public static void write(List<String> content,String fileName){
 		try {
 			FileWriter wr = new FileWriter(fileName);
+			wr.write("num"+content.size()+"\n");
 			for(String str :content){
 				wr.write(str+"\n");
 			}

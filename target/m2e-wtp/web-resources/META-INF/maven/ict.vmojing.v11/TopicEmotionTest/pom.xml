@@ -140,12 +140,14 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		<!-- Other -->
+		<!-- http -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
+		
+
 		
 	</dependencies>
 	
@@ -155,6 +157,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 			<name>Spring Maven Milestone Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
 		</repository>
+		
 	</repositories>
 	<build>
 		<finalName>topic-emotion</finalName>

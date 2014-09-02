@@ -33,7 +33,7 @@ public class TopicController {
 	@RequestMapping("showList")
 	public String getList(String topicId,Model model){
 		topicService = new TopicServiceImpl();
-		List<Weibo> weibos = topicService.getTopicWeiboList(topicId, 10, 1);
+		List<Weibo> weibos = topicService.getTopicWeiboList(topicId);
 		model.addAttribute("weibos",weibos);
 		return "topic";
 	}

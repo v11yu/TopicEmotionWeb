@@ -123,10 +123,11 @@ public class MongoDBManager {
 	 * @return
 	 */
 	public DBCollection getColl(String collname){
-		MyLog.logDebug("create col "+collname);
+		
 		if (getDB().collectionExists(collname)) {
 	        return getDB().getCollection(collname);
 	    } else {
+	    	MyLog.logDebug("create col "+collname);
 	        DBObject options = BasicDBObjectBuilder.start().add("capped", false).get();
 	        return getDB().createCollection(collname, options);
 	    }

@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
+import org.bson.types.ObjectId;
+
 import ict.vmojing.v11.utils.*;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -66,12 +71,34 @@ protected DBCollection Collection;
 		Collection.save(obj);
 	}
 	/**
+	 * 保存所以记录
+	 * @param cursor
+	 */
+	public void saveAll(DBCursor cursor){
+		while(cursor.hasNext()){
+			DBObject obj = cursor.next();
+			save(obj);
+		}
+	}
+	/**
 	 * 删除该表所有记录
 	 */
 	public void dropAll(){
 		Collection.drop();
 	}
-	public static void main(String[] args) {
-		new BasicDao().findByValueLessThanEquals("ca", "he");
+	/**
+	 * 更新数据
+	 * @param obj完整的变动后的 obj
+	 * @param keyName 变动的keyName
+	 */
+	public void update(DBObject obj,String keyName){
+		DBObject query = new BasicDBObject("_id",obj.get("_id"));
+        DBObject updateObj = new BasicDBObject(keyName,obj.get(keyName));
+        Collection.update(query, new BasicDBObject("$set", updateObj));
+		//Collection.update(query, updateObj);
 	}
+	public static void main(String[] args) {
+		
+	}
+	
 }
