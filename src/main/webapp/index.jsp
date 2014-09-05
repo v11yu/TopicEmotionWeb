@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   	<p>输入TopicId</p>
-    <form action="showList" method="get">
+    <form action="weiboList" method="get">
     <input type="text" name="topicId" /><br/>
     <input type="submit" value="submit">
     </form>

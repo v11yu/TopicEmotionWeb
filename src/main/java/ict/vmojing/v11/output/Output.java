@@ -7,6 +7,9 @@ import ict.vmojing.v11.utils.WriteFile;
 
 import java.util.*;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
 public class Output {
 	public static void output(){
 		TopicServiceImpl topicService = new TopicServiceImpl();
@@ -30,5 +33,11 @@ public class Output {
 	}
 	public static void main(String[] args) {
 		output();	
+		
+		
+		DBObject obj = new BasicDBObject();
+		obj.put("es",1);
+		
+		
 	}
 }

@@ -63,7 +63,7 @@ public class EmotionProcessor {
 		int count = 0;
 		for(String str : ls){
 			if(wordMap.containsKey(str)){
-				//MyLog.logDebug(str+" "+wordMap.get(str));
+				MyLog.logDebug(str+" "+wordMap.get(str));
 				result += wordMap.get(str);
 				count++;
 			}
@@ -114,7 +114,7 @@ public class EmotionProcessor {
 		return getEmotionRankByNgram(content,threshold_high,threshold_low);
 	}
 	public static void main(String[] args) {
-		String content = "亲俄献媚，早晚有一天吃大亏的，自做聪明，俄罗斯侵占中国最多的土地，还在犯贱，醒醒中国某组织";
+		String content = "网评：林治波出任新闻学院院长动了谁的奶酪？ - 唱响红歌，弘扬正气！ 网评：林治波出任新闻学院院长动了谁的奶酪？";
 		EmotionProcessor eProcess = getUniqueProcess();
 		MyLog.logInfo(eProcess.getEmotionRankByNgram(content)+" "+content);
 	}

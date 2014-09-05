@@ -53,4 +53,5 @@ public class Check {
 		System.out.println("命中："+ok+" 总计："+sum);
 		System.out.println("准确率 "+1.0*ok/sum);
 	}
+	
 }
