@@ -1,5 +1,6 @@
 package ict.vmojing.v11.controller;
 
+import ict.vmojing.v11.dao.WeiboDao;
 import ict.vmojing.v11.model.Weibo;
 import ict.vmojing.v11.service.TopicService;
 import ict.vmojing.v11.service.TopicServiceImpl;
@@ -30,7 +31,7 @@ public class TopicController {
 		topicService = new TopicServiceImpl();
 		if(itemCount == null) itemCount = 10;
 		if(pageNum == null) pageNum = 1;
-		String res = topicService.getTopicListToString(topicId, itemCount, pageNum);
+		String res = topicService.toJSONObject(topicService.getTopicCursor(topicId, itemCount, pageNum));
 		MyLog.logInfo(res);
 		return res;
 	}
@@ -64,7 +65,7 @@ public class TopicController {
 	@RequestMapping("weiboList")
 	public String showWeiboList(String topicId,Model model){
 		topicService = new TopicServiceImpl();
-		List<Weibo> weibos = topicService.getTopicWeiboList(topicId);
+		List<Weibo> weibos = topicService.addDBCursorWithEmotion(topicService.getTopicCursor(topicId));
 		model.addAttribute("weibos",weibos);
 		return "topic";
 	}
