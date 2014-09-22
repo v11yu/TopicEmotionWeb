@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 /**
  * 对生成的词 或 现有的词典
  * 进行过滤
@@ -18,14 +20,14 @@ import java.util.Map.Entry;
  *
  */
 public class WordFilter {
-
+	private static final Logger log = Logger.getLogger(WordFilter.class);
 	/**
 	 * 根据停用词过滤词典
 	 * @param map 原词典
 	 * @return 过滤后的词典
 	 */
 	public static HashMap<String, Integer> filterStopWords(HashMap<String, Integer> map){
-		MyLog.logInfo("map object id :"+map.toString());
+		log.info("map object id :"+map.toString());
 		Iterator<Entry<String, Integer>> iter = map.entrySet().iterator();
 		List<String> stops = WordManager.getUniqueDictionary().getStops();
 		while(iter.hasNext()){
@@ -74,6 +76,6 @@ public class WordFilter {
 	public static void main(String[] args) {
 		HashMap<String, Integer> res = WordManager.getUniqueDictionary().getWords();
 		res = filterStopWords(res);
-		WriteFile.write(res, "./src/main/resources/new_word");
+		WriteFileTool.write(res, "./src/main/resources/new_word");
 	}
 }

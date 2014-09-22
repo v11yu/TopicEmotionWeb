@@ -5,7 +5,7 @@ import java.util.List;
 
 
 
-public class WordSplit {
+public class WordSpliter {
 	/**
 	 * 利用N-gram切割文本
 	 * @param content 文本

@@ -5,11 +5,9 @@ import ict.vmojing.v11.service.TopicService;
 import ict.vmojing.v11.service.TopicServiceImpl;
 import ict.vmojing.v11.utils.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 
@@ -18,10 +16,14 @@ import java.util.Map.Entry;
 
 
 
+
+import org.apache.log4j.Logger;
+
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-public class WordUpdate {
+public class WordUpdater {
+	private static final Logger log = Logger.getLogger(WordUpdater.class);
 	private HashMap<String, Integer> updateMap = new HashMap<String, Integer>();
 	private final double pos_score = 2.9;
 	private final double neg_score = -1.9;
@@ -69,7 +71,7 @@ public class WordUpdate {
 		 * 输出
 		 */
 		//addMapWord();
-		WriteFile.write(MapTools.sortMap(updateMap), output,1);
+		WriteFileTool.write(MapTool.sortMap(updateMap), output,1);
 	}
 	/**
 	 * 将获取的新词加入词典中
@@ -82,10 +84,10 @@ public class WordUpdate {
 			String keyString = entry.getKey();
 			Integer valueInteger = entry.getValue();
 			if(!dic.containsKey(keyString) && Math.abs(valueInteger) >= threshold_count){
-				MyLog.logInfo("新词项："+keyString+" "+valueInteger);
+				log.info("新词项："+keyString+" "+valueInteger);
 				dic.put(keyString, valueInteger);
 				Integer score = getWordScore(valueInteger);
-				WriteFile.addWord(keyString,score,output);
+				WriteFileTool.addWord(keyString,score,output);
 			}
 			
 		}
@@ -104,7 +106,7 @@ public class WordUpdate {
 	 */
 	private void setThreshold(Integer sum){
 		threshold_count = sum / 10;
-		MyLog.logInfo("threshold "+threshold_count);
+		log.info("threshold "+threshold_count);
 	}
 	/**
 	 * 构建词典
@@ -114,22 +116,22 @@ public class WordUpdate {
 		while (cursor.hasNext()) {
 			DBObject obj = cursor.next();
 			String content = (String) obj.get(_content);
-			MyLog.logInfo(content);
+			log.info(content);
 			if (getPos(content)) {
-				List<String> words = WordSplit.splitByNGrams(content, 1, 3);
+				List<String> words = WordSpliter.splitByNGrams(content, 1, 3);
 				for (String word : words) {
-					MapTools.setCountToMap(updateMap, word, 1);
+					MapTool.setCountToMap(updateMap, word, 1);
 				}
 			} else if (getNeg(content)) {
-				List<String> words = WordSplit.splitByNGrams(content, 1, 3);
+				List<String> words = WordSpliter.splitByNGrams(content, 1, 3);
 				for (String word : words) {
-					MapTools.setCountToMap(updateMap, word, -1);
+					MapTool.setCountToMap(updateMap, word, -1);
 				}
 			}
 		}
 	}
 	public static void main(String[] args) {
-		WordUpdate update = new WordUpdate();
+		WordUpdater update = new WordUpdater();
 		String topicId = "53eb680080cd34525537e95d";
 		TopicService tService = new TopicServiceImpl();
 		update.setUp(tService.getTopicCursor(topicId),"./src/main/resources/dic_all");

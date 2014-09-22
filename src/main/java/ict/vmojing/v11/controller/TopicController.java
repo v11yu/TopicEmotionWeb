@@ -1,18 +1,14 @@
 package ict.vmojing.v11.controller;
 
-import ict.vmojing.v11.dao.WeiboDao;
+import ict.vmojing.v11.dao.MongoDBManager;
 import ict.vmojing.v11.model.Weibo;
 import ict.vmojing.v11.service.TopicService;
 import ict.vmojing.v11.service.TopicServiceImpl;
-import ict.vmojing.v11.utils.MyLog;
-
-import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/")
 public class TopicController {
-	
+	private static final Logger log = Logger.getLogger(TopicController.class);
 	private TopicService topicService;
 
 	@RequestMapping("doGetTopicWeiboList")
@@ -32,7 +28,7 @@ public class TopicController {
 		if(itemCount == null) itemCount = 10;
 		if(pageNum == null) pageNum = 1;
 		String res = topicService.toJSONObject(topicService.getTopicCursor(topicId, itemCount, pageNum));
-		MyLog.logInfo(res);
+		log.info(res);
 		return res;
 	}
 	@RequestMapping("readTagCloud")

@@ -6,6 +6,8 @@ import java.util.List;
 
 
 
+
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
 import ict.vmojing.v11.utils.*;
@@ -17,7 +19,8 @@ import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 
 public class BasicDao {
-protected DBCollection Collection;
+	private static final Logger log = Logger.getLogger(BasicDao.class);
+	protected DBCollection Collection;
 	
 	/**
 	 * 查询全部记录
@@ -25,7 +28,6 @@ protected DBCollection Collection;
 	 */
 	public DBCursor findByAll(){
 		DBCursor cursor = Collection.find();
-		
 		return cursor;
 	}
 	/**
@@ -58,11 +60,10 @@ protected DBCollection Collection;
 	 */
 	public DBCursor findByValueEquals(String valueName,Object value){
 		DBObject query = QueryBuilder.start().and(valueName).is(value).get();
-		MyLog.logInfo(query.toString());
+		log.info(query.toString());
 		DBCursor cursor = Collection.find(query);
 		return cursor;
 	}
-
 	/**
 	 * 保存记录
 	 * @param obj  
@@ -97,8 +98,27 @@ protected DBCollection Collection;
         Collection.update(query, new BasicDBObject("$set", updateObj));
 		//Collection.update(query, updateObj);
 	}
-	public static void main(String[] args) {
-		
+	/**
+	 * 对已有的Cursor进行排序
+	 * @param keyName 字段名
+	 * @param op 1：asc，-1：desc
+	 * @param cursor 待处理的DBCursor
+	 * @return
+	 * @date 2014年9月22日
+	 */
+	public DBCursor sort(String keyName,int op,DBCursor cursor){
+		return cursor.sort(new BasicDBObject(keyName,op));
+	}
+	/**
+	 * 分页查找
+	 * @param itemCount 每页个数
+	 * @param pageNum 页数
+	 * @param cursor 待处理的DBCursor
+	 * @return
+	 * @date 2014年9月22日
+	 */
+	public DBCursor findByPage(Integer itemCount,Integer pageNum,DBCursor cursor){
+		return cursor.skip(itemCount * pageNum).limit(itemCount);
 	}
 	
 }

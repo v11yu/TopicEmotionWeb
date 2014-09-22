@@ -6,7 +6,9 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
+import ict.vmojing.v11.output.Output;
 import ict.vmojing.v11.utils.*;
 
 import com.mongodb.BasicDBObjectBuilder;
@@ -23,9 +25,9 @@ import com.mongodb.ServerAddress;
  *
  */
 public class MongoDBManager {
+	private static final Logger log = Logger.getLogger(MongoDBManager.class);
 	private static MongoDBManager uniqueMongoDBManager;
 	private Mongo mongo;
-	private Log log = LogFactory.getLog(MongoDBManager.class.getName());
 	private DB db;
 
 	/**
@@ -127,7 +129,7 @@ public class MongoDBManager {
 		if (getDB().collectionExists(collname)) {
 	        return getDB().getCollection(collname);
 	    } else {
-	    	MyLog.logDebug("create col "+collname);
+	    	log.debug("create col "+collname);
 	        DBObject options = BasicDBObjectBuilder.start().add("capped", false).get();
 	        return getDB().createCollection(collname, options);
 	    }

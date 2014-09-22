@@ -15,7 +15,6 @@ public class WeiboDao extends BasicDao{
 		this.Collection = MongoDBManager.getUniqueMongoDBManager().getColl(MongoConfig.getValue("weibo"));
 	}
 	public WeiboDao(String dbname){
-
 		this.Collection = MongoDBManager.getUniqueMongoDBManager().getColl(dbname);
 	}
 	public static List<Weibo> toList(DBCursor weiboCursor){

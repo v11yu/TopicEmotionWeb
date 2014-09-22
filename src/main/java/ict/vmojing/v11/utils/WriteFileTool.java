@@ -9,10 +9,13 @@ import javax.swing.text.html.parser.Entity;
 
 
 
+
+import org.apache.log4j.Logger;
+
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-public class WriteFile {
-
+public class WriteFileTool {
+	private static final Logger log = Logger.getLogger(WriteFileTool.class);
 	/**
 	 * 将List类型，写入文件
 	 * @param content
@@ -27,7 +30,7 @@ public class WriteFile {
 			}
 			wr.close();
 		} catch (Exception e) {
-			MyLog.logError("can not wirte file");
+			log.error("can not wirte file");
 		}
 	}
 	/**
@@ -46,7 +49,7 @@ public class WriteFile {
 			}
 			wr.close();
 		} catch (Exception e) {
-			MyLog.logError("can not wirte file");
+			log.error("can not wirte file");
 		}
 	}
 	/**
@@ -67,7 +70,7 @@ public class WriteFile {
 			}
 			wr.close();
 		} catch (Exception e) {
-			MyLog.logError("can not wirte file");
+			log.error("can not wirte file");
 		}
 	}
 	/**
@@ -86,7 +89,7 @@ public class WriteFile {
 			}
 			wr.close();
 		} catch (Exception e) {
-			MyLog.logError("can not wirte file");
+			log.error("can not wirte file");
 		}
 	}
 	/**

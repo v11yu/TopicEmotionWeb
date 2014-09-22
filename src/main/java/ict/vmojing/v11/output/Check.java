@@ -9,7 +9,7 @@ import ict.vmojing.v11.algorithm.nlp.EmotionProcessor;
 import ict.vmojing.v11.dao.WeiboDao;
 import ict.vmojing.v11.service.TopicService;
 import ict.vmojing.v11.service.TopicServiceImpl;
-import ict.vmojing.v11.utils.WriteFile;
+import ict.vmojing.v11.utils.WriteFileTool;
 
 public class Check {
 	public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class Check {
 		}
 		System.out.println("手工标识结果 支持:"+pos+" 反对:"+neg+" 中立:"+no);
 		System.out.println("系统结果 支持:"+pp+" 反对:"+nn+" 中立:"+oo);
-		WriteFile.write(ls, "./src/main/resources/sign_weibo.txt");
+		WriteFileTool.write(ls, "./src/main/resources/sign_weibo.txt");
 		System.out.println("命中："+ok+" 总计："+sum);
 		System.out.println("准确率 "+1.0*ok/sum);
 	}

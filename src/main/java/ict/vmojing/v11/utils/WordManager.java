@@ -22,13 +22,13 @@ public class WordManager {
 	private final String _symbols = "symbols";
 	private final String _rules = "rules";
 	private WordManager(){
-		stops = ReadFile.readFileToList(_stop_word);
+		stops = ReadFileTool.readFileToList(_stop_word);
 		words = new HashMap<String, Integer>();
-		words.putAll(ReadFile.readFileToMap(_words));
-		words.putAll(ReadFile.readFileToMap(_update_words));
-		words.putAll(ReadFile.readFileToMap(_user_words));
-		symbols = ReadFile.readFileToMap(_symbols);
-		rules = ReadFile.readFileToList(_rules);
+		words.putAll(ReadFileTool.readFileToMap(_words));
+		words.putAll(ReadFileTool.readFileToMap(_update_words));
+		words.putAll(ReadFileTool.readFileToMap(_user_words));
+		symbols = ReadFileTool.readFileToMap(_symbols);
+		rules = ReadFileTool.readFileToList(_rules);
 	}
 	public static WordManager getUniqueDictionary(){
 		if(uniqueDictionary == null){

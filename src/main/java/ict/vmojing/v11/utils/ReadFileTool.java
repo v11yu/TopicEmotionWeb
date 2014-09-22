@@ -8,13 +8,15 @@ import java.io.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * 文件读写类
  * @author v11
  *
  */
-public class ReadFile {
+public class ReadFileTool {
+	private static final Logger log = Logger.getLogger(ReadFileTool.class);
 	private static final String utf_8 = "utf-8";
 	/**
 	 * 读取文件转化为hashMap
@@ -24,7 +26,7 @@ public class ReadFile {
 	public static HashMap<String, Integer> readFileToMap(String fileName){
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-		if(is == null) MyLog.logDebug("read file is null");
+		if(is == null) log.warn("read file is null");
 		try {
 			InputStreamReader isr = new InputStreamReader(is, utf_8);
 			BufferedReader reader = new BufferedReader(isr);
@@ -48,7 +50,7 @@ public class ReadFile {
 	public static HashMap<String, Integer> readFileToMap(String fileName,Integer weight){
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-		if(is == null) MyLog.logDebug("read file is null");
+		if(is == null) log.warn("read file is null");
 		try {
 			InputStreamReader isr = new InputStreamReader(is, utf_8);
 			BufferedReader reader = new BufferedReader(isr);
@@ -71,7 +73,7 @@ public class ReadFile {
 	public static List<String> readFileToList(String fileName){
 		List<String> ls = new ArrayList<String>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-		if(is == null) MyLog.logDebug("read file is null");
+		if(is == null) log.warn("read file is null");
 		try {
 			InputStreamReader isr = new InputStreamReader(is, utf_8);
 			BufferedReader reader = new BufferedReader(isr);
@@ -93,7 +95,7 @@ public class ReadFile {
 	public static Set<String> readFileToSet(String fileName){
 		Set<String> ls = new HashSet<String>();
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-		if(is == null) MyLog.logDebug("read file is null");
+		if(is == null) log.warn("read file is null");
 		try {
 			InputStreamReader isr = new InputStreamReader(is, utf_8);
 			BufferedReader reader = new BufferedReader(isr);

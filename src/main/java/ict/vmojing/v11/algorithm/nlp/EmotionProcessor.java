@@ -1,8 +1,7 @@
 package ict.vmojing.v11.algorithm.nlp;
 
 import ict.vmojing.v11.algorithm.nlp.word.WordFilter;
-import ict.vmojing.v11.algorithm.nlp.word.WordSplit;
-import ict.vmojing.v11.utils.MyLog;
+import ict.vmojing.v11.algorithm.nlp.word.WordSpliter;
 import ict.vmojing.v11.utils.WordManager;
 
 import java.util.HashMap;
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.sound.midi.MidiDevice.Info;
+
+import org.apache.log4j.Logger;
 
 import com.mongodb.util.UniqueList;
 
@@ -22,6 +23,7 @@ import com.mongodb.util.UniqueList;
  * @version 1.0
  */
 public class EmotionProcessor {
+	private static final Logger log = Logger.getLogger(EmotionProcessor.class);
 	/*
 	 * 词典
 	 */
@@ -58,12 +60,12 @@ public class EmotionProcessor {
 	public Double getScore(String content){
 		
 		Double score;
-		List<String> ls = WordSplit.splitByNGrams(content, 1, 5);
+		List<String> ls = WordSpliter.splitByNGrams(content, 1, 5);
 		int result = 0;
 		int count = 0;
 		for(String str : ls){
 			if(wordMap.containsKey(str)){
-				MyLog.logDebug(str+" "+wordMap.get(str));
+				log.debug(str+" "+wordMap.get(str));
 				result += wordMap.get(str);
 				count++;
 			}
@@ -116,6 +118,6 @@ public class EmotionProcessor {
 	public static void main(String[] args) {
 		String content = "网评：林治波出任新闻学院院长动了谁的奶酪？ - 唱响红歌，弘扬正气！ 网评：林治波出任新闻学院院长动了谁的奶酪？";
 		EmotionProcessor eProcess = getUniqueProcess();
-		MyLog.logInfo(eProcess.getEmotionRankByNgram(content)+" "+content);
+		//log.info(eProcess.getEmotionRankByNgram(content)+" "+content);
 	}
 }

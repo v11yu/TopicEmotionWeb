@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class MapTools {
+public class MapTool {
 
 	/**
 	 * 将信息累加保存至Map

@@ -3,16 +3,19 @@ package ict.vmojing.v11.output;
 import ict.vmojing.v11.dao.WeiboDao;
 import ict.vmojing.v11.model.Weibo;
 import ict.vmojing.v11.service.TopicServiceImpl;
-import ict.vmojing.v11.utils.MyLog;
-import ict.vmojing.v11.utils.WriteFile;
+
+import ict.vmojing.v11.utils.WriteFileTool;
 
 import java.util.*;
+
+import org.apache.log4j.Logger;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 public class Output {
+	private static final Logger log = Logger.getLogger(Output.class);
 	public static void output(){
 		TopicServiceImpl topicService = new TopicServiceImpl();
 		DBCursor cursor = topicService.getTopicCursor("hahe");
@@ -32,7 +35,7 @@ public class Output {
 //		WriteFile.write(pos, "./src/main/resources/pos_hahe");
 //		WriteFile.write(neg, "./src/main/resources/neg_hahe");
 //		WriteFile.write(no, "./src/main/resources/no_hahe");
-		MyLog.logInfo("支持个数:"+pos.size()+" 反对个数:"+neg.size()+" 中立个数:"+no.size());
+		log.info("支持个数:"+pos.size()+" 反对个数:"+neg.size()+" 中立个数:"+no.size());
 	}
 	public static void main(String[] args) {
 		output();	

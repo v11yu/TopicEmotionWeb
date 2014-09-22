@@ -3,26 +3,12 @@ package ict.vmojing.v11.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -30,11 +16,11 @@ import com.mongodb.DBObject;
 import ict.vmojing.v11.algorithm.nlp.EmotionProcessor;
 import ict.vmojing.v11.dao.*;
 import ict.vmojing.v11.model.Weibo;
-import ict.vmojing.v11.utils.MyLog;
 import ict.vmojing.v11.utils.WordManager;
 
 @Service
 public class TopicServiceImpl implements TopicService{
+	private static final Logger log = Logger.getLogger(TopicServiceImpl.class);
 	private static final String ValueName = "tid";
 	WeiboDao wdao ;
 	public TopicServiceImpl(){
@@ -51,7 +37,7 @@ public class TopicServiceImpl implements TopicService{
 	@Override
 	public DBCursor getTopicCursor(String topicId, Integer itemCount,
 			Integer pageNum) {
-		DBCursor cursor = wdao.findByValueEquals(ValueName, topicId).skip(itemCount * pageNum).limit(itemCount);;
+		DBCursor cursor = wdao.findByValueEquals(ValueName, new ObjectId(topicId)).skip(itemCount * pageNum).limit(itemCount);
 		return cursor;
 	}
 	@Override
