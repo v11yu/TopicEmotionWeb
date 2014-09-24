@@ -28,21 +28,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	
     <script type="text/javascript">
-    
     var word_list = [
-      {text: "halo", weight: 2, link:"a"},
-	  {text: "hey", weight: 3, link:"a"},
-	  {text: "cat", weight: 2, link:"a"},
-	  {text: "dog", weight: 4, link:"a"},
-	 ];
+                  {text: "halo", weight: 2, link:"a"},
+               	  {text: "hey", weight: 3, link:"a"},
+               	  {text: "cat", weight: 2, link:"a"},
+               	  {text: "dog", weight: 4, link:"a"},
+               	 ];
+    function getTopicTagCloud(){
+    	 $.ajax({
+  		   type: "post",
+  	       url:"readTagCloud",
+  	       datatype : "json",
+  	       success:function(data) {
+  	    	   
+  	    	   word_list = data;
+  	    	   word_list = JSON.parse(word_list)
+  	    	   $("#tagCloud").html("");
+  	    	   $("#tagCloud").jQCloud(word_list);
+  	    	   
+  	       },
+  	       error: function() {	console.log("topic infomation request failed!"); }
+  	 });
+    }
+   $(function(){
+	   $("#tagCloud").jQCloud(word_list);
+   });
+   
+    
+    
       
-      $(function() {
-        $("#tagCloud").jQCloud(word_list);
-      });
+      
     </script>
   </head>
   <body>
 <!-- border: 1px solid #ccc; -->
     <div id="tagCloud" style="width: 550px; height: 200px; "></div>
+    <button onclick="getTopicTagCloud()">点击这里</button>
   </body>
 </html>
