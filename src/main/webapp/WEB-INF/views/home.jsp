@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>输入TopicId</title>
+    <title>输入TopicId(home)</title>
 
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">

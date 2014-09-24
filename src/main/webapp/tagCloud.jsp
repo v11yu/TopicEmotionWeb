@@ -29,10 +29,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
     <script type="text/javascript">
     
-    var word_list = [{text: halo, weight: 2, link:a}
-	 ,{text: hey, weight: 3, link:a}
-	 ,{text: cat, weight: 2, link:a}
-	 ,{text: dog, weight: 4, link:a}];
+    var word_list = [
+      {text: "halo", weight: 2, link:"a"},
+	  {text: "hey", weight: 3, link:"a"},
+	  {text: "cat", weight: 2, link:"a"},
+	  {text: "dog", weight: 4, link:"a"},
+	 ];
       
       $(function() {
         $("#tagCloud").jQCloud(word_list);
